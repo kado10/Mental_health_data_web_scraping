@@ -134,3 +134,8 @@ for (x in unique(weblink_main$.)) {
 }
 
 # EXPORT DATA ##################################################################
+
+write.csv(df_scrape, "df_scrape.csv") 
+
+write.csv(df_scrape_old, "df_scrape_old.csv")
+
