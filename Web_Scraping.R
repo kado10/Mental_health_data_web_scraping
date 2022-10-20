@@ -133,9 +133,45 @@ for (x in unique(weblink_main$.)) {
     
 }
 
+# FORMAT DATA ##################################################################
+
+df_scrape <- df_scrape %>%
+  mutate(MEASURE_NAME_AGE = case_when(str_detect( MEASURE_NAME, "ged 0 to 17")== TRUE~ "0 -17",
+                                      str_detect( MEASURE_NAME, "ged 18 to 34")== TRUE~ "18 -34",
+                                      str_detect( MEASURE_NAME, "ged 18 to 69")== TRUE~ "18 -69",
+                                      str_detect( MEASURE_NAME, "0 to 18")== TRUE~ "0 -18",
+                                      str_detect( MEASURE_NAME, "under 18")== TRUE~ "0 -17",
+                                      str_detect( MEASURE_NAME, "0 and 17")== TRUE~ "0 -17",
+                                      str_detect( MEASURE_NAME, "Age 17 bed")== TRUE~ "17",
+                                      str_detect( MEASURE_NAME, "Age 16 bed")== TRUE~ "16",
+                                      str_detect( MEASURE_NAME, "65 and")== TRUE~ "65",
+                                      str_detect( MEASURE_NAME, "19 to64")== TRUE~ "19 -64",
+                                      str_detect( MEASURE_NAME, "18 to 64")== TRUE~ "18 -64",
+                                      str_detect( MEASURE_NAME, "19 to 64")== TRUE~ "19 -64",
+                                      str_detect( MEASURE_NAME, "35 and over")== TRUE~ "35",
+                                      str_detect( MEASURE_NAME, "0-18")== TRUE~ "0-18",
+                                      str_detect( MEASURE_NAME, "18 and over")== TRUE~ "18",
+                                  T~ "All age"),
+         Referrals_ind = case_when(str_detect( MEASURE_NAME, "Referral")== TRUE~ 1,
+                           str_detect( MEASURE_NAME, "referral")== TRUE~ 1,
+                           T ~ 0),
+         Discharge_ind = case_when(str_detect( MEASURE_NAME, "Discharge")== TRUE~ 1,
+                                   str_detect( MEASURE_NAME, "discharge")== TRUE~ 1,
+                                   T ~ 0),
+         Contacts_ind = case_when(str_detect( MEASURE_NAME, "Contact")== TRUE~ 1,
+                                   str_detect( MEASURE_NAME, "contact")== TRUE~ 1,
+                                   T ~ 0),
+         Admissions_ind = case_when(str_detect( MEASURE_NAME, "Admission")== TRUE~ 1,
+                                  str_detect( MEASURE_NAME, "admission")== TRUE~ 1,
+                                  T ~ 0),
+         MHA_ind = case_when(str_detect( MEASURE_NAME, "Detention")== TRUE~ 1,
+                                    str_detect( MEASURE_NAME, "Short Term Order")== TRUE~ 1,
+                             str_detect( MEASURE_NAME, "Section 136")== TRUE~ 1,
+                             str_detect( MEASURE_NAME, "CTO")== TRUE~ 1,
+                                    T ~ 0),
+         MEASURE_VALUE = as.numeric(MEASURE_VALUE)) 
+
+
 # EXPORT DATA ##################################################################
 
-write.csv(df_scrape, "df_scrape.csv") 
-
-write.csv(df_scrape_old, "df_scrape_old.csv")
-
+write.csv(df_scrape, "Mental_health_monthly.csv")
